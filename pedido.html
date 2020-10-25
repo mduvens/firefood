@@ -122,7 +122,7 @@
                 console.log(data)
                 pedido = data
                 Object.keys(pedido).forEach(produto => {
-                    totalLinha = parseInt(pedido[produto]["preco"]) * parseInt(pedido[produto][
+                    totalLinha = parseFloat(parseFloat(pedido[produto]["preco"])) * parseInt(pedido[produto][
                         "quantidade"
                     ])
                     $('#tabela').append(`
@@ -148,7 +148,7 @@
                 $("#total").html(`${total}€`)
 
             })
-            $("#go").click(function (e) {               
+            $("#go").click(function (e) {             
                 $.post('/guardaPedido')
                 e.preventDefault()
             }) 

@@ -77,7 +77,7 @@ app.post('/guardaPedido',urlencodedParser,function(req,res){
 saveDB = function(pedido){
     Object.keys(pedido).forEach(i => {
         console.log("yoooooo3")
-        total += pedido[i]['quantidade'] * pedido[i]['preco']
+        total = pedido[i]['quantidade'] * pedido[i]['preco']
         let sql = "INSERT INTO `pedidos` (`quantidade`, `produto`, `preco`, `total`) VALUES (?);"
         connection.query(sql,[[pedido[i]['quantidade'],i,pedido[i]['preco'],total]], function(error,rows,fields){
             if (error) {
