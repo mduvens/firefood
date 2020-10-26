@@ -73,13 +73,13 @@ app.post('/guardaPedido',urlencodedParser,function(req,res){
         produtos = {}
         // res.redirect('/')
 })
-
+let idPedido = 0
 saveDB = function(pedido){
     Object.keys(pedido).forEach(i => {
-        console.log("yoooooo3")
+        console.log(`pedido ${idPedido}`)
         total = pedido[i]['quantidade'] * pedido[i]['preco']
-        let sql = "INSERT INTO `pedidos` (`quantidade`, `produto`, `preco`, `total`) VALUES (?);"
-        connection.query(sql,[[pedido[i]['quantidade'],i,pedido[i]['preco'],total]], function(error,rows,fields){
+        let sql = "INSERT INTO `pedidos` (`id`,`quantidade`, `produto`, `preco`, `total`) VALUES (?);"
+        connection.query(sql,[[idPedido,pedido[i]['quantidade'],i,pedido[i]['preco'],total]], function(error,rows,fields){
             if (error) {
                 console.log('Error in the query')
             } else {
@@ -87,8 +87,28 @@ saveDB = function(pedido){
             }
             })
     })
+    idPedido++
 
 }
+getPedidos = function(){
+    return new Promise(function(resolve,reject){
+        pedidos = []
+        connection.query("SELECT * FROM `pedidos` WHERE id = 1", function(error,rows,fields){
+            if (error) {
+                console.log('Error in the query')
+            } else {
+                console.log('Selecionados')
+            }
+            resolve(rows)  
+            }) 
+      
+    })  
+}
+getPedidos().then(function(rows){
+    pedidos = rows
+    console.log(pedidos[0].id)
+}).catch((err)  => {throw err})
+
 app.get('/getPedido', function(req,res){         
     constroiPedido()
     res.send(pedido)
